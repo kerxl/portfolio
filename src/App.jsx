@@ -20,7 +20,8 @@ function App() {
   const aboutRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const [selectedProject, setSelectedProject] = useState(null); // null = modal tertutup
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [formStatus, setFormStatus] = useState(null);
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -114,7 +115,7 @@ function App() {
               showUserInfo={true}
               enableTilt={true}
               enableMobileTilt={false}
-              onContactClick={() => console.log('Contact clicked')}
+              onContactClick={() => window.open('https://t.me/kerxl', '_blank')}
             />
           </div>
         </div>
@@ -206,25 +207,26 @@ function App() {
         </div>
         {/* tentang */}
 
-        {/* Proyek */}
-        <div className="project mt-32 py-10" id="project" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true"></div>
-        <h1 className="text-center text-4xl font-bold mb-2" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">{t.project}</h1>
-        <p className="text-base/loose text-center opacity-50" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" data-aos-once="true">{t.projectDescription}</p>
-        <div className="project-box mt-14" >
+        {/* Projects */}
+        <div className="mt-32 mx-auto w-full max-w-[1600px] rounded-3xl border-[5px] border-violet-500/40 shadow-[0_0_30px_rgba(168,85,247,0.4)] bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#1a1a1a] p-6" id="project" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
+          <h1 className="text-center text-4xl font-bold mb-2 pt-6" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">{t.project}</h1>
+          <p className="text-base/loose text-center opacity-50" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" data-aos-once="true">{t.projectDescription}</p>
+          <div className="project-box mt-10 pb-6">
 
-          <div style={{ height: 'auto', position: 'relative' }} data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" data-aos-once="true" >
-            <ChromaGrid
-              items={listProjects}
-              onItemClick={handleProjectClick} // Kirim fungsi untuk handle klik
-              translations={t}
-              radius={500}
-              damping={0.45}
-              fadeOut={0.6}
-              ease="power3.out"
-            />
+            <div style={{ height: 'auto', position: 'relative' }} data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" data-aos-once="true" >
+              <ChromaGrid
+                items={listProjects}
+                onItemClick={handleProjectClick}
+                translations={t}
+                radius={500}
+                damping={0.45}
+                fadeOut={0.6}
+                ease="power3.out"
+              />
+            </div>
           </div>
         </div>
-        {/* Proyek */}
+        {/* Projects */}
 
 
         {/* Kontak */}
@@ -250,8 +252,27 @@ function App() {
           {/* Contact Form */}
           <div className="max-w-2xl mx-auto">
             <form
-              action="https://formsubmit.co/knxtex@gmail.com"
-              method="POST"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setFormStatus('sending');
+                const form = e.target;
+                const data = new FormData(form);
+                try {
+                  const res = await fetch('https://formsubmit.co/ajax/knxtex@gmail.com', {
+                    method: 'POST',
+                    body: data,
+                  });
+                  if (res.ok) {
+                    setFormStatus('success');
+                    form.reset();
+                  } else {
+                    setFormStatus('error');
+                  }
+                } catch {
+                  setFormStatus('error');
+                }
+                setTimeout(() => setFormStatus(null), 4000);
+              }}
               className="bg-zinc-800 p-10 w-full rounded-md"
               autoComplete="off"
               data-aos="fade-up"
@@ -259,7 +280,9 @@ function App() {
               data-aos-delay="400"
               data-aos-once="true"
             >
-                <input type="hidden" name="_subject" value={t.emailSubject} />
+                <input type="hidden" name="_subject" value="Отклик с портфолио" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="font-semibold">{t.fullName}</label>
@@ -267,7 +290,7 @@ function App() {
                       type="text"
                       name="Name"
                       placeholder={t.inputName}
-                      className="border border-zinc-500 p-2 rounded-md"
+                      className="border border-zinc-500 bg-zinc-900 text-white p-3 rounded-md focus:border-violet-500 focus:outline-none transition-colors"
                       required
                     />
                   </div>
@@ -277,7 +300,7 @@ function App() {
                       type="email"
                       name="Email"
                       placeholder={t.inputEmail}
-                      className="border border-zinc-500 p-2 rounded-md"
+                      className="border border-zinc-500 bg-zinc-900 text-white p-3 rounded-md focus:border-violet-500 focus:outline-none transition-colors"
                       required
                     />
                   </div>
@@ -287,18 +310,29 @@ function App() {
                       name="message"
                       id="message"
                       cols="45"
-                      rows="7"
+                      rows="5"
                       placeholder={t.inputMessage}
-                      className="border border-zinc-500 p-2 rounded-md"
+                      className="border border-zinc-500 bg-zinc-900 text-white p-3 rounded-md focus:border-violet-500 focus:outline-none transition-colors resize-none"
                       required
                     ></textarea>
                   </div>
+                  {formStatus === 'success' && (
+                    <div className="text-center py-3 px-4 rounded-lg bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 font-medium">
+                      ✓ Сообщение отправлено!
+                    </div>
+                  )}
+                  {formStatus === 'error' && (
+                    <div className="text-center py-3 px-4 rounded-lg bg-red-500/20 border border-red-500/50 text-red-400 font-medium">
+                      ✗ Ошибка отправки. Попробуйте ещё раз.
+                    </div>
+                  )}
                   <div className="text-center">
                     <button
                       type="submit"
-                      className="font-semibold bg-[#1a1a1a] p-4 px-6 rounded-full w-full cursor-pointer border border-gray-700 hover:bg-[#222] transition-colors"
+                      disabled={formStatus === 'sending'}
+                      className="font-semibold bg-[#1a1a1a] p-4 px-6 rounded-full w-full cursor-pointer border border-gray-700 hover:bg-[#222] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <ShinyText text={t.send} disabled={false} speed={3} className="custom-class" />
+                      <ShinyText text={formStatus === 'sending' ? 'Отправка...' : t.send} disabled={false} speed={3} className="custom-class" />
                     </button>
                   </div>
                 </div>

@@ -1,31 +1,31 @@
 import Aurora from "./Aurora/Aurora"
 import { useState, useEffect } from "react"
-import CountUp from "./CountUp/CountUp"
 
 const PreLoader = () => {
   const [loading, setLoading] = useState(true)
-  const [countDone, setCountDone] = useState(false)
-  const [fadeText, setFadeText] = useState(false)
+  const [count, setCount] = useState(0)
   const [fadeScreen, setFadeScreen] = useState(false)
 
   useEffect(() => {
-    if (countDone) {
-      // Fade teks
-      const fadeTextTimer = setTimeout(() => setFadeText(true), 3000)
+    const interval = setInterval(() => {
+      setCount(prev => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          return 100
+        }
+        return prev + 2
+      })
+    }, 10)
+    return () => clearInterval(interval)
+  }, [])
 
-      // Fade seluruh screen
-      const fadeScreenTimer = setTimeout(() => setFadeScreen(true), 2000)
-
-      // Unmount preloader setelah animasi fade selesai
-      const hideTimer = setTimeout(() => setLoading(false), 3000)
-
-      return () => {
-        clearTimeout(fadeTextTimer)
-        clearTimeout(fadeScreenTimer)
-        clearTimeout(hideTimer)
-      }
+  useEffect(() => {
+    if (count >= 100) {
+      const fadeTimer = setTimeout(() => setFadeScreen(true), 1000)
+      const hideTimer = setTimeout(() => setLoading(false), 2000)
+      return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer) }
     }
-  }, [countDone])
+  }, [count])
 
   return (
     loading && (
@@ -40,20 +40,8 @@ const PreLoader = () => {
           amplitude={1.0}
           speed={0.5}
         />
-        <div
-          className={`absolute text-white text-6xl font-bold transition-all duration-1000 ${
-            fadeText ? "opacity-0 -translate-y-10" : "opacity-100 translate-y-0"
-          }`}
-        >
-          <CountUp
-            from={0}
-            to={100}
-            separator=","
-            direction="up"
-            duration={1}
-            className="count-up-text"
-            onEnd={() => setCountDone(true)}
-          />
+        <div className="absolute text-white text-6xl font-bold">
+          {count}%
         </div>
       </div>
     )

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FiX, FiGithub } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { FiX } from 'react-icons/fi';
 import { useLanguage } from '../../LanguageContext';
 import translations from '../../i18n';
 
@@ -47,12 +47,14 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
         onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat diklik di dalam
         className={`bg-zinc-900 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'} max-h-[90vh] overflow-y-auto`}
       >
-        {/* --- GAMBAR PROYEK --- */}
-        <img 
-          src={project.image} 
-          alt={project.title} 
-          className="w-full h-56 object-cover rounded-t-2xl"
-        />
+        {/* --- PROJECT IMAGE --- */}
+        <div className="w-full aspect-video overflow-hidden bg-black/40">
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="w-full h-full object-cover"
+          />
+        </div>
 
         <div className="p-6 flex flex-col gap-4">
             <div className="flex justify-between items-start">
@@ -127,15 +129,6 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 </ul>
             </div>
 
-            <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center justify-center gap-2 font-semibold bg-violet-600 p-3 px-5 rounded-full w-full cursor-pointer border border-transparent hover:bg-violet-700 transition-colors"
-            >
-                <FiGithub />
-                <span>{t.sourceCode}</span>
-            </a>
         </div>
       </div>
        {/* CSS untuk animasi */}
