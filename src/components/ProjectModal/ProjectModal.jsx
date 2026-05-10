@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FiX, FiGithub } from 'react-icons/fi'; // Install react-icons jika belum: npm install react-icons
+import { FiX, FiGithub } from 'react-icons/fi';
+import { useLanguage } from '../../LanguageContext';
+import translations from '../../i18n';
 
 const ProjectModal = ({ isOpen, onClose, project }) => {
+  const { language } = useLanguage();
+  const t = translations[language];
+  
   // State untuk mengontrol animasi penutupan
   const [isClosing, setIsClosing] = useState(false);
 
@@ -40,7 +45,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
       {/* Modal Content */}
       <div
         onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat diklik di dalam
-        className={`bg-zinc-900 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'}`}
+        className={`bg-zinc-900 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'} max-h-[90vh] overflow-y-auto`}
       >
         {/* --- GAMBAR PROYEK --- */}
         <img 
@@ -51,7 +56,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 
         <div className="p-6 flex flex-col gap-4">
             <div className="flex justify-between items-start">
-                <h2 className="text-2xl font-bold text-white">{project.title}</h2>
+                <h2 className="text-2xl font-bold text-white">{t[`project${project.id}Title`] || project.title}</h2>
                 <button
                     onClick={handleClose}
                     className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700 -mt-2 -mr-2"
@@ -60,10 +65,67 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 </button>
             </div>
 
-            {/* --- DESKRIPSI LENGKAP --- */}
-            <p className="text-zinc-300 text-base leading-relaxed">
-                {project.fullDescription}
-            </p>
+            {/* --- COMPANY AND PERIOD --- */}
+            <div className="flex items-center gap-3 text-sm text-zinc-400 border-b border-zinc-700 pb-4">
+                <span className="font-semibold text-violet-400">{t[`project${project.id}Company`] || project.company}</span>
+                <span>•</span>
+                <span>{t[`project${project.id}Period`] || project.period}</span>
+            </div>
+
+            {/* --- RESPONSIBILITIES --- */}
+            <div>
+                <h3 className="text-lg font-semibold text-violet-300 mb-2">{t.responsibilities}</h3>
+                <ul className="list-disc list-inside space-y-1 text-zinc-300 text-sm">
+                    {project.id === 1 ? (
+                        <>
+                            <li key="resp1" className="pl-2">{t.project1Resp1}</li>
+                            <li key="resp2" className="pl-2">{t.project1Resp2}</li>
+                            <li key="resp3" className="pl-2">{t.project1Resp3}</li>
+                        </>
+                    ) : project.id === 2 ? (
+                        <>
+                            <li key="resp1" className="pl-2">{t.project2Resp1}</li>
+                            <li key="resp2" className="pl-2">{t.project2Resp2}</li>
+                            <li key="resp3" className="pl-2">{t.project2Resp3}</li>
+                        </>
+                    ) : (
+                        <>
+                            <li key="resp1" className="pl-2">{t.project3Resp1}</li>
+                            <li key="resp2" className="pl-2">{t.project3Resp2}</li>
+                        </>
+                    )}
+                </ul>
+            </div>
+
+            {/* --- KEY ACHIEVEMENTS --- */}
+            <div>
+                <h3 className="text-lg font-semibold text-violet-300 mb-2">{t.keyAchievements}</h3>
+                <ul className="list-disc list-inside space-y-1 text-zinc-300 text-sm">
+                    {project.id === 1 ? (
+                        <>
+                            <li key="ach1" className="pl-2">{t.project1Ach1}</li>
+                            <li key="ach2" className="pl-2">{t.project1Ach2}</li>
+                            <li key="ach3" className="pl-2">{t.project1Ach3}</li>
+                            <li key="ach4" className="pl-2">{t.project1Ach4}</li>
+                            <li key="ach5" className="pl-2">{t.project1Ach5}</li>
+                            <li key="ach6" className="pl-2">{t.project1Ach6}</li>
+                        </>
+                    ) : project.id === 2 ? (
+                        <>
+                            <li key="ach1" className="pl-2">{t.project2Ach1}</li>
+                            <li key="ach2" className="pl-2">{t.project2Ach2}</li>
+                            <li key="ach3" className="pl-2">{t.project2Ach3}</li>
+                            <li key="ach4" className="pl-2">{t.project2Ach4}</li>
+                        </>
+                    ) : (
+                        <>
+                            <li key="ach1" className="pl-2">{t.project3Ach1}</li>
+                            <li key="ach2" className="pl-2">{t.project3Ach2}</li>
+                            <li key="ach3" className="pl-2">{t.project3Ach3}</li>
+                        </>
+                    )}
+                </ul>
+            </div>
 
             <a
                 href={project.url}
@@ -72,7 +134,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 className="mt-4 inline-flex items-center justify-center gap-2 font-semibold bg-violet-600 p-3 px-5 rounded-full w-full cursor-pointer border border-transparent hover:bg-violet-700 transition-colors"
             >
                 <FiGithub />
-                <span>Source Code</span>
+                <span>{t.sourceCode}</span>
             </a>
         </div>
       </div>

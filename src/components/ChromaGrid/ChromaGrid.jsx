@@ -6,6 +6,7 @@ import "./ChromaGrid.css";
 export const ChromaGrid = ({
   items,
   onItemClick, // Fungsi handler dari App.jsx
+  translations, // Переводы
   className = "",
   radius = 300,
   columns = 3,
@@ -104,9 +105,9 @@ export const ChromaGrid = ({
             <img src={c.image} alt={c.title} loading="lazy" />
           </div>
           <footer className="chroma-info">
-            <h3 className="name">{c.title}</h3>
+            <h3 className="name">{translations[`project${c.id}Title`] || c.title}</h3>
             {c.handle && <span className="handle">{c.handle}</span>}
-            <p className="role">{c.subtitle}</p>
+            <p className="role">{translations[`project${c.id}Subtitle`] || c.subtitle}</p>
             {c.location && <span className="location">{c.location}</span>}
           </footer>
         </article>

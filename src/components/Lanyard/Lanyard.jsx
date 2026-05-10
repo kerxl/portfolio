@@ -1,14 +1,15 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { Environment, Lightformer, useGLTF, useTexture } from '@react-three/drei';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
+import { useEffect, useRef, useState } from 'react';
 
 // replace with your own imports, see the usage snippet for details
-const cardGLB = "/portofolio/assets/card.glb";
-const lanyard = "/portofolio/assets/lanyard.png";
+const cardGLB = "/assets/AuxScene/AuxScene.glb";
+const lanyard = "/assets/lanyard.png";
+const cardTexture = "/assets/AuxScene/base.jpg";
 
 import * as THREE from 'three';
 import './Lanyard.css';
@@ -43,12 +44,53 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
   const { nodes, materials } = useGLTF(cardGLB);
   const texture = useTexture(lanyard);
+  const cardTex = useTexture(cardTexture);
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
   const [isSmall, setIsSmall] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth < 1024
   );
+  const [error, setError] = useState(null);
+
+  // Проверка структуры файла
+  useEffect(() => {
+    if (!nodes || !materials) {
+      const errorMsg = 'Failed to load 3D model';
+      setError(errorMsg);
+      console.error('Lanyard Error:', errorMsg);
+      return;
+    }
+    
+    // Проверка наличия необходимых узлов
+    const requiredNodes = ['card', 'clip', 'clamp'];
+    const missingNodes = requiredNodes.filter(node => !nodes[node]);
+    
+    if (missingNodes.length > 0) {
+      const errorMsg = `Missing nodes in GLB file: ${missingNodes.join(', ')}`;
+      setError(errorMsg);
+      console.error('Lanyard Error:', errorMsg);
+      console.log('Available nodes:', Object.keys(nodes));
+      return;
+    }
+    
+    // Проверка наличия необходимых материалов
+    const requiredMaterials = ['base', 'metal'];
+    const missingMaterials = requiredMaterials.filter(mat => !materials[mat]);
+    
+    if (missingMaterials.length > 0) {
+      const errorMsg = `Missing materials in GLB file: ${missingMaterials.join(', ')}`;
+      setError(errorMsg);
+      console.error('Lanyard Error:', errorMsg);
+      console.log('Available materials:', Object.keys(materials));
+      return;
+    }
+  }, [nodes, materials]);
+
+  // Если есть ошибка, не рендерим 3D сцену
+  if (error) {
+    return null;
+  }
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);

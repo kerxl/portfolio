@@ -1,28 +1,28 @@
-# Portofolio Web — [Faris Edrik P / rissss21]
+# Portfolio Website — [Kirill Dolgoruchenko / kerxl]
 
-Selamat datang di portofolio web pribadi saya! 🌐  
-Dibuat dengan React + Vite, ini adalah showcase dari project, skill, dan karya yang ingin saya bagikan.
+Welcome to my personal portfolio website! 🌐  
+Built with React + Vite, this showcases my projects, skills, and work.
 
-##  Struktur Project
+## Project Structure
 
-- `public/` — file statis (favicon, assets, dsb.)  
-- `src/` — code utama React (komponen, utilitas, dsb.)  
-- `index.html` — entry point halaman web  
-- `package.json` & `package-lock.json` — manajemen dependencies dan script  
-- `vite.config.js` — konfigurasi build dan dev server Vite  
-- `eslint.config.js` — aturan linting agar kodenya tetap bersih dan konsisten  
+- `public/` — static files (favicon, assets, etc.)  
+- `src/` — main React code (components, utilities, etc.)  
+- `index.html` — entry point for the web page  
+- `package.json` & `package-lock.json` — dependency management and scripts  
+- `vite.config.js` — Vite build and dev server configuration  
+- `eslint.config.js` — linting rules to keep code clean and consistent  
 
-##  Fitur Utama
+## Key Features
 
-- Dibangun dengan **React + Vite** — ringan, cepat reload, dan performa build optimal  
-- **ESLint** telah terkonfigurasi agar coding style tetap rapi  
-- Struktur modular dan siap dikembangkan—bisa ditambahkan halaman “About”, “Projects”, dsb.
+- Built with **React + Vite** — lightweight, fast reload, and optimal build performance  
+- **ESLint** configured to maintain clean coding style  
+- Modular structure and ready to expand — can add "About", "Projects", etc. pages
 
-##  Cara Jalankan
+## How to Run
 
-1. Clone repository ini:
+1. Clone this repository:
 ```bash
-git clone https://github.com/rissss21/portofolio.git
+git clone https://github.com/kerxl/portofolio.git
 cd portofolio
 ````
 
@@ -31,31 +31,29 @@ cd portofolio
 npm install
 ````
 
-3. Jalankan server lokal dengan hot reload:
+3. Run local server with hot reload:
 ```bash
 npm run dev
 ````
 
-4. Buat versi production:
+4. Create production build:
 ```bash
 npm run build
 ````
 
-## &#x20;Quick Preview
+## Quick Preview
 
-Jika sudah di-deploy (contoh: GitHub Pages, Netlify, Vercel), kamu bisa tambahkan link deploy di sini, misalnya:
-[🔗 Lihat versi live](https://username.github.io/portofolio/)
+Once deployed (e.g., GitHub Pages, Netlify, Vercel), you can add the deploy link here, for example:
+[🔗 View live version](https://kerxl.github.io/resume/)
 
-## Tentang Saya
+## About Me
 
-Hai, saya Faris Edrik P (username GitHub: `rissss21`).
-Saya seorang Developer yang suka bikin aplikasi web ringan dengan tampilan modern dan performa tinggi. Scroll aja di project saya, dan jangan sungkan untuk reach out kalau ada pertanyaan!
+Hi, I'm Kirill Dolgoruchenko (GitHub username: `kerxl`).
+I'm a Backend Python Engineer focused on reliability, detail, scalability, and integrability. I optimize bottlenecks in architecture and deliver working solutions on time. Scroll through my projects, and feel free to reach out if you have any questions!
 
-* **Email:** [email\_farisedrik21@gmail.com](mailto:email_farisedrik21@gmail.com)
-* **LinkedIn:** [linkedin.com/in/farisedp](https://www.linkedin.com/in/farisedp/)
-* **Instagram:** @farisedrikprayoga
-
----
+* **Email:** [knxtex@gmail.com](mailto:knxtex@gmail.com)
+* **Telegram:** [@kerxl](https://t.me/kerxl)
+* **GitHub:** [github.com/kerxl](https://github.com/kerxl)
 
 
-[1]: https://github.com/rissss21/portofolio "GitHub - rissss21/portofolio"
+[1]: https://github.com/kerxl/portofolio "GitHub - kerxl/portofolio"
