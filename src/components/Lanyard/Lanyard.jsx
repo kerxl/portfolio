@@ -7,9 +7,10 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { useEffect, useRef, useState } from 'react';
 
 // replace with your own imports, see the usage snippet for details
-const cardGLB = "/assets/AuxScene/AuxScene.glb";
-const lanyard = "/assets/lanyard.png";
-const cardTexture = "/assets/AuxScene/base.jpg";
+const base = import.meta.env.BASE_URL;
+const cardGLB = `${base}assets/AuxScene/AuxScene.glb`;
+const lanyard = `${base}assets/lanyard.png`;
+const cardTexture = `${base}assets/AuxScene/base.jpg`;
 
 import * as THREE from 'three';
 import './Lanyard.css';
